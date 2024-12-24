@@ -1,13 +1,14 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
+using System.Xml;
 
 namespace pr7_Kurlishuk
 {
@@ -16,7 +17,7 @@ namespace pr7_Kurlishuk
         private static HttpClient _httpClient;
         private static string _cookie;
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
