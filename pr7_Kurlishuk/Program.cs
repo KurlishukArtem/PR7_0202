@@ -62,5 +62,51 @@ namespace pr7_Kurlishuk
             }
             return null;
         }
+        public static async Task AddRecord(string name, string description, string imageUrl)
+        {
+            string url = "http://127.0.0.1/ajax/add.php";
+            Trace.WriteLine($"Выполняем запрос: {url}");
+            var formData = new Dictionary<string, string>
+            {
+                { "name", name },
+                { "description", description },
+                { "src", imageUrl }
+            };
+            var content = new FormUrlEncodedContent(formData);
+            HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+            Trace.WriteLine($"Статус выполнения: {response.StatusCode}");
+            string responseFromServer = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Ответ сервера: {responseFromServer}");
+            if (response.IsSuccessStatusCode) Console.WriteLine(responseFromServer);
+            else Console.WriteLine($"Ошибка при добавлении записи: {response.StatusCode}");
+        }
+
+
+        public static async Task<string> GetHtmlFromUrl(string url)
+        {
+            Trace.WriteLine($"Выполняем запрос: {url}");
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            Trace.WriteLine($"Статус выполнения: {response.StatusCode}");
+            string htmlCode = await response.Content.ReadAsStringAsync();
+            return htmlCode;
+        }
+
+        public static void ParsingHtml(string htmlCode)
+        {
+            var html = new HtmlDocument();
+            html.LoadHtml(htmlCode);
+            var Document = html.DocumentNode;
+            var newsItems = Document.Descendants("div").Where(n => n.HasClass("news"));
+            foreach (var newsItem in newsItems)
+            {
+                var image = newsItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "none");
+                var name = newsItem.Descendants("div").FirstOrDefault(n => n.HasClass("name"))?.InnerText.Trim();
+                var description = newsItem.Descendants("div").FirstOrDefault(n => !n.HasClass("name"))?.InnerText.Trim();
+                Console.WriteLine($"Заголовок: {name}");
+                Console.WriteLine($"Картинка: {image}");
+                Console.WriteLine($"Описание: {description}");
+                Console.WriteLine(new string('-', 40));
+            }
+        }
     }
 }
