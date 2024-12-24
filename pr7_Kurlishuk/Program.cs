@@ -53,7 +53,7 @@ namespace pr7_Kurlishuk
             var content = new FormUrlEncodedContent(formData);
             HttpResponseMessage response = await _httpClient.PostAsync(url, content);
             Trace.WriteLine($"Статус выполнения: {response.StatusCode}");
-            string responseFromServer = await response.Content.ReadAsStringAsync();
+            string responseFromServer = await response.Content.ReadAsStringAsync(); 
             Console.WriteLine($"Ответ сервера: {responseFromServer}");
             if (response.Headers.TryGetValues("Set-Cookie", out var cookieValues))
             {
