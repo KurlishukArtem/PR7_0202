@@ -105,7 +105,7 @@ namespace pr7_Kurlishuk
                 Console.WriteLine($"Заголовок: {name}");
                 Console.WriteLine($"Картинка: {image}");
                 Console.WriteLine($"Описание: {description}");
-                Console.WriteLine(new string('-', 40));
+                Console.WriteLine(new string('-', 40)); 
             }
         }
     }
